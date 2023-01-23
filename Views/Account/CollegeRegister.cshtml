@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "CollegeRegister";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+@model TechPlacement.Model.CollegeMasterModel
+
+@using (Html.BeginForm("CollegeRegister", "Account", FormMethod.Post))
+{
+
+
+    <div class="min-vh-100 d-flex flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="card-group d-block d-md-flex row">
+                        <div class="card col-md-7 p-4 mb-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-center pb-0 fs-4">College Register</h5>
+
+                                @Html.ValidationSummary(true)
+                                <div class="row">
+                                    @Html.ValidationMessage("CustomError", "", new { @style = "color:red" })
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.ClName, "College Name", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="ClName" placeholder="CollegeName">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">@Html.ValidationMessageFor(u => u.ClName, "", new { @style = "color:red" })</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.Address, "Address", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="Address" placeholder="Address">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.City, "City", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="City" placeholder="City">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.State, "State", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="State" placeholder="State">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.Pincode, "Pincode", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="Pincode" placeholder="Pincode">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.ContactPerson, "ContactPerson", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="ContactPerson" placeholder="ContactPerson">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.MobileNo, "MobileNo", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="MobileNo" placeholder="MobileNo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.ContactNo, "Contact No", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="ContactNo" placeholder="ContactNo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.ClEmailId, "College EmailId", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="ClEmailId" placeholder="College EmailId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.ContactEmailId, "Contact Person EmailId", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="ContactEmailId" placeholder="Contact Person EmailId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.Website, "Website", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="Website" placeholder="Website">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.UName, "User Name", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="UName" placeholder="UName">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">@Html.ValidationMessageFor(u => u.UName, "", new { @style = "color:red" })</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(u => u.Password, "Password", new { @style = "color:style='color: #ffffff'" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input class="form-control" type="password" name="Password" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">@Html.ValidationMessageFor(u => u.Password, "", new { @style = "color:red" })</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button class="btn btn-default px-4" type="submit" style="background-color:red;color:black">Register</button>
+                                    </div>
+                                    <div class="col-6 text-end">
+
+                                        @Html.ActionLink("Login", "Login", "Account", new { @class = "page-scroll" })
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+}
+

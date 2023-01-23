@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using TechPlacement.Model;
+
+@model IEnumerable<UserInfo>
+
+
+<div class="body flex-grow-1" style="padding-left:0px !important;">
+    <div class="container-lg px-0">
+        <form class="form-control">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <h4> Operator Informations </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <a id="btnAddUser" class="btn btn-primary"> Add User </a>
+                            </div>
+                            <div id="displayMsg" class="col-12" style="color:green">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>UserName</th>
+                                            <th>Email</th>
+                                            <th>Is Active</th>
+                                            <th>Created Date</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal hide fade in" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lblexampleModalLabel"> ADD USER </h5>
+                <button type="button" class="close btnCloseModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="div1"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnsubmit" class="btn btn-primary">Save </button>
+                <button type="button" class="btn btn-secondary btnCloseModal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <input id="userMode" type="hidden" />
+</div>
+
+<div class="modal fade" id="exampleRoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Assign Operator Role  </h5>
+                <button type="button" class="close btnRoleCloseModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divOperatorRole"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnRolesubmit" class="btn btn-primary">Save </button>
+                <button type="button" class="btn btn-secondary btnRoleCloseModal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <input id="userMode" type="hidden" />
+    <input id="editedUserID" type="hidden" />
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+
+        $('#exampleModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#exampleRoleModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    });
+
+    $(".btnUserEdit").click(function () {
+        var id = $(this).attr('id');
+        $("#userMode").val("Edit");
+        $.ajax({
+            url: "/Admin/GetUserDetailByUserId",
+            data: { userId: id },
+            success: function (result) {
+                $("#div1").html(result);
+                $('#exampleModal').modal('show');
+            }
+        });
+    });
+
+
+    $(".btnOperateDelete").click(function () {
+        var id = $(this).attr('id');
+       
+        $.ajax({
+            url: "/Admin/DeleteOperatorInfo",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: { userId: id },
+            success: function (result) {
+                var output = result;
+                if (result.success == true) {
+                    var resultOut = result.message;
+                    $("#displayMsg").html(resultOut);
+                }
+                else {
+                    alert(result.message);
+                }
+            }
+        });
+    });
+
+    function isValidCharacter(txtTitle) {
+        debugger;
+       var regExp = /^[a-zA-Z]*$/
+        if (!regExp.test(txtTitle)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    $("#btnAddUser").click(function () {
+        var id = -1;
+
+        $("#userMode").val("Add");
+        $.ajax({
+            url: "/Admin/GetUserDetailByUserId",
+            data: { userId: id },
+            success: function (result) {
+                $("#div1").html(result);
+                $('#exampleModal').modal('show');
+            }
+        });
+    });
+
+    $(".btnCloseModal").click(function () {
+        $('#exampleModal').modal('hide');
+    })
+
+
+    $(".btnRoleCloseModal").click(function () {
+        $('#exampleRoleModal').modal('hide');
+    })
+
+
+
+    $("#btnsubmit").click(function (e) {
+        // Validate Password and Confirm Password
+        var firstName = $("#FirstName").val();
+        var lastName = $("#LastName").val();
+        var userName = $("#UserName").val();
+        var pw1 = $("#pwd").val();
+        var pw2 = $("#cpwd").val(); // document.getElementById("cpwd");
+        var errorMsg = "";
+
+        if (isValidCharacter(firstName) == false) {
+            errorMsg = errorMsg + ' ' + "Enter Valid First Name. Special characters not allowed ! <br/>";
+        }
+
+        if (isValidCharacter(lastName) == false) {
+            errorMsg = errorMsg + ' ' + "Enter Valid Last name. Special characters not allowed ! <br/>";
+        }
+
+        if (userName == undefined || userName == "") {
+            errorMsg = errorMsg + ' ' + "UserName IsRequired! <br/>";
+        }
+        else if (isValidCharacter(userName) == false) {
+            errorMsg = errorMsg + ' ' + "Enter Valid Last name. Special characters not allowed ! <br/>";
+        }
+
+        if (pw1 == undefined || pw1 == "") {
+            errorMsg = errorMsg + ' ' + "Password IsRequired! <br/>";
+        }
+
+        if (pw2 == undefined || pw2 == "") {
+            errorMsg = errorMsg + ' ' + "Confirm  Password IsRequired! <br/>";
+        }
+        if (pw1 != pw2) {
+            errorMsg = errorMsg + ' ' + "Password and Confirm Password did not match. <br/>";
+        }
+
+
+        var userEmail = $("#EmailId").val();
+
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(userEmail)) {
+            errorMsg = errorMsg + ' ' + "Invalid e-mail address <br/>";
+        }
+
+        if (errorMsg.length > 0) {
+            var objDisplay = $("#diplayMsg").html(errorMsg);
+            return;
+        }
+
+
+
+        //Serialize the form datas.
+        var valdata = $("#frmUserInformation").serialize();
+        //to get alert popup
+        $.ajax({
+            url: "/Admin/AddUserInformation",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: valdata,
+            success: function (result) {
+                
+                var output = result;
+                if (result.success == true) {
+                    var resultOut = $("#displayPopupMsg").html(result.message);
+                    $("#displayMsg").html(resultOut);
+                    $('#exampleModal').modal('hide');
+                    reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            }
+        });
+    });
+
+
+
+    $(".btnRoleEdit").click(function () {
+        var id = $(this).attr('id');
+        $("#editedUserID").val(id);
+        $('#exampleRoleModal').modal('show');
+        //Serialize the form datas.
+        //to get alert popup
+
+        $.ajax({
+            url: "/Admin/GetOperatorRole",
+            data: { userId: id },
+            success: function (result) {
+                $("#divOperatorRole").html(result);
+                $('#exampleRoleModal').modal('show');
+            }
+        });
+
+    });
+
+    $("#btnRolesubmit").click(function (e) {
+        
+        var roleId = $('#drplRole').val();
+        var editUserID = $("#editedUserID").val();
+        var errorMsg = "";
+
+
+        if (roleId == -1) {
+            errorMsg = errorMsg + ' ' + "Please Select Role. Role Is Required. <br/>";
+        }
+      
+        if (errorMsg.length > 0) {
+            var objDisplay = $("#diplayRoleMsg").html(errorMsg);
+            return;
+        }
+
+        //to get alert popup
+        $.ajax({
+            url: "/Admin/AddOrUpdateRoleForUser",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: { userID: editUserID, roleID: roleId },
+            success: function (result) {
+                
+                var output = result;
+                if (result.success == true) {
+                    var resultOut = $("#displayRolePopupMsg").html(result.message);
+                    $("#displayMsg").html(resultOut);
+                    $('#exampleRoleModal').modal('hide');                   
+                    reload();
+                   
+                }
+                else {
+                    alert(result.message);
+                }
+            }
+        });
+    });
+
+    function reload() {
+        location.reload();
+    };
+
+
+
+</script>

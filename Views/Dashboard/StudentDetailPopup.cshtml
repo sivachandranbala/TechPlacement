@@ -1,0 +1,197 @@
+﻿@using TechPlacement.Model
+@model StudentModel
+<form id="frmStudentMaster">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="diplayMsg" style="color:red"></div>
+        </div>
+        <div class="col-md-12" style="display:none">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="col-md-6">
+                        <label>  Serial No </label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" id="SId" name="SId" class="form-control form-control-sm" value="@Model.SId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  First Name </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="FName" name="FName" class="form-control form-control-sm checkCode" value="@Model.FName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Last Name </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="LName" name="LName" class="form-control form-control-sm" value="@Model.LName" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Enrollment No </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="EnrollNo" name="EnrollNo" class="form-control form-control-sm" value="@Model.EnrollNo" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Address </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Address" name="Address" class="form-control form-control-sm" value="@Model.Address" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  City</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="City" name="City" class="form-control form-control-sm" value="@Model.City" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  State </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="State" name="State" class="form-control form-control-sm" value="@Model.State" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Pincode </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Pincode" name="Pincode" class="form-control form-control-sm" value="@Model.Pincode" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Date of Birth</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="Dob" name="Dob" class="form-control form-control-sm" />
+                            <input type="hidden" id="pDob" value=@( Model.Dob.HasValue ?  Model.Dob.Value.ToString("MM/dd/yyyy") : "--/--/----") />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Gender </label>
+                        </div>
+                        <div class="col-md-6">
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Male",
+                                    Value = "Male"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Female",
+                                    Value = "Female",
+                                });
+
+                            }
+                            @Html.DropDownListFor(model => model.Gender, listItems, "Gender", new { @class = "form-control", })
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Mobile No</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="MobileNo" name="MobileNo" class="form-control form-control-sm" value="@Model.MobileNo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-md-12">
+            <div class="row">
+              
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Is Active </label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.CheckBoxFor(m => m.IsActive, true);
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="displayPopupMsg"></div>
+
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        if ($("#userMode").val() == 'Add') {
+            $('#exampleModalLabel').html("Add Student")
+
+        }
+        else {
+         //   $(".checkCode").attr('readonly', true);
+            $('#exampleModalLabel').html("Edit Student")
+        };
+    });
+</script>
