@@ -20,8 +20,12 @@
                         <div class="col-12">
                             <a id="btnAddStudent" class="btn btn-primary"> Add Student </a>
                         </div>
-                        <div id="displayMsg" class="col-12" style="color:green">
-                        </div>
+                 
+                    </div>
+                    <div class="row">
+                            <div id="displayMsg" class="col-12" style="color:green">
+                            </div>
+                      
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -31,7 +35,7 @@
                                         @{
 
                                             <tr>
-                                                 <th style="display:none"> Student Id</th>
+                                                <th style="display:none"> Student Id</th>
                                                 <th> Student Name</th>
                                                 <th>Enrollment No </th>
                                                 <th>Education</th>
@@ -49,19 +53,29 @@
                                             foreach (var dashBoardInfo in Model)
                                             {
 
-                                             <tr>
-                                                 <td style="display:none"> @dashBoardInfo.StudentId</td>
-                                                 <td> @dashBoardInfo.Name</td>
-                                                 <td> @dashBoardInfo.EnrollNo</td>
-                                                 <td> @dashBoardInfo.Education</td>
-                                                 <td> @dashBoardInfo.PassYear</td>
-                                                 <td> @dashBoardInfo.Department</td>
-                                                 <td> @dashBoardInfo.CGPA</td>
-                                                 <td> @dashBoardInfo.Skill</td>
-                                                 <td>
-                                                     <a class="btn btn-primary btnTruckEdit" id="@dashBoardInfo.StudentId"> Edit </a>
-                                                 </td>
-                                             </tr>
+                                                <tr>
+                                                    <td style="display:none"> @dashBoardInfo.StudentId</td>
+                                                    <td> @dashBoardInfo.Name</td>
+                                                    <td> @dashBoardInfo.EnrollNo</td>
+                                                    <td> @dashBoardInfo.PassYear</td>
+                                                    <td> @dashBoardInfo.Department</td>
+                                                    <td> @dashBoardInfo.CGPA</td>
+                                                    <td> @dashBoardInfo.Skill</td>
+                                                    <td>
+                                                        <a class="btn btn-primary btnStudentEdit" id="@dashBoardInfo.StudentId"> Edit </a>
+                                                        <a class="btn btn-primary btnStudentDelete" id="@dashBoardInfo.StudentId"> Delete </a>
+                                                        @{
+                                                            if (dashBoardInfo.OfferLetter != "")
+                                                            {
+
+                                                                <a class="btn btn-primary btnDownload" id="@dashBoardInfo.OfferLetter"> Download offer letter</a>
+                                                            }
+
+                                                        }
+
+
+                                                    </td>
+                                                </tr>
 
                                             }
 
@@ -115,20 +129,47 @@
      
     });
 
-    $(".btnUserEdit").click(function () {
+    $(".btnStudentEdit").click(function () {
         var id = $(this).attr('id');
         $("#userMode").val("Edit");
         $.ajax({
-            url: "/Admin/GetUserDetailByUserId",
-            data: { userId: id },
+            url: "/Dashboard/GetStudentById",
+            data: { studentId: id },
             success: function (result) {
                 $("#div1").html(result);
                 $('#exampleModal').modal('show');
             }
         });
+
+
     });
 
 
+    $(".btnStudentDelete").click(function () {
+        debugger;
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "/Dashboard/DeleteStudent",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: { studentId: id },
+            success: function (result) {
+
+                var output = result;
+                if (result.success == true) {
+                    debugger;
+                    var resultOut =result.message;
+                    $("#displayMsg").html(resultOut);
+                    //  reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            }
+        });
+
+    });
 
     $("#btnAddStudent").click(function () {
         debugger;
@@ -154,46 +195,27 @@
 
     $("#btnsubmit").click(function (e) {
         // Validate Password and Confirm Password
-        var firstName = $("#FirstName").val();
-        var lastName = $("#LastName").val();
-        var userName = $("#UserName").val();
-        var pw1 = $("#pwd").val();
-        var pw2 = $("#cpwd").val(); // document.getElementById("cpwd");
+        debugger;
+        var firstName = $("#FName").val();
+        var lastName = $("#LName").val();
+
         var errorMsg = "";
 
-        if (isValidCharacter(firstName) == false) {
+        if (firstName == "") {
             errorMsg = errorMsg + ' ' + "Enter Valid First Name. Special characters not allowed ! <br/>";
         }
 
-        if (isValidCharacter(lastName) == false) {
+        if (lastName == "") {
             errorMsg = errorMsg + ' ' + "Enter Valid Last name. Special characters not allowed ! <br/>";
         }
 
-        if (userName == undefined || userName == "") {
-            errorMsg = errorMsg + ' ' + "UserName IsRequired! <br/>";
-        }
-        else if (isValidCharacter(userName) == false) {
-            errorMsg = errorMsg + ' ' + "Enter Valid Last name. Special characters not allowed ! <br/>";
-        }
+        
+        //var email = $("#EmailId").val();
 
-        if (pw1 == undefined || pw1 == "") {
-            errorMsg = errorMsg + ' ' + "Password IsRequired! <br/>";
-        }
-
-        if (pw2 == undefined || pw2 == "") {
-            errorMsg = errorMsg + ' ' + "Confirm  Password IsRequired! <br/>";
-        }
-        if (pw1 != pw2) {
-            errorMsg = errorMsg + ' ' + "Password and Confirm Password did not match. <br/>";
-        }
-
-
-        var userEmail = $("#EmailId").val();
-
-        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (!expr.test(userEmail)) {
-            errorMsg = errorMsg + ' ' + "Invalid e-mail address <br/>";
-        }
+        //var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        //if (!expr.test(email)) {
+        //    errorMsg = errorMsg + ' ' + "Invalid e-mail address <br/>";
+        //}
 
         if (errorMsg.length > 0) {
             var objDisplay = $("#diplayMsg").html(errorMsg);
@@ -203,10 +225,10 @@
 
 
         //Serialize the form datas.
-        var valdata = $("#frmUserInformation").serialize();
+        var valdata = $("#frmStudentMaster").serialize();
         //to get alert popup
         $.ajax({
-            url: "/Admin/AddUserInformation",
+            url: "/Dashboard/AddStudentInformation",
             type: "POST",
             dataType: 'json',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -215,10 +237,11 @@
 
                 var output = result;
                 if (result.success == true) {
+                    debugger;
                     var resultOut = $("#displayPopupMsg").html(result.message);
                     $("#displayMsg").html(resultOut);
                     $('#exampleModal').modal('hide');
-                    reload();
+                   //    reload();
                 }
                 else {
                     alert(result.message);

@@ -57,6 +57,82 @@
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         <div class="col-md-6">
+                            <label>  Department </label>
+                        </div>
+                        <div class="col-md-6">
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Electrical and Electronics Engineering",
+                                    Value = "EEE"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Electronics and Communication Engineering",
+                                    Value = "ECE",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Computer Science",
+                                    Value = "CSE",
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "Mechanical Engineering",
+                                    Value = "MECH",
+                                });
+
+                            }
+                            @Html.DropDownListFor(model => model.Department, listItems, "Select", new { @class = "form-control", })
+                        </div>
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  CGPA </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="CGPA" name="CGPA" class="form-control form-control-sm" value="@Model.CGPA" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Year of Passed </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="PassYear" name="PassYear" class="form-control form-control-sm" value="@Model.PassYear" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+              
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Skill </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Skill" name="Skill" class="form-control form-control-sm" value="@Model.Skill" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
                             <label>  Address </label>
                         </div>
                         <div class="col-md-6">
@@ -66,6 +142,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
@@ -127,21 +205,21 @@
                         </div>
                         <div class="col-md-6">
                             @{
-                                List<SelectListItem> listItems = new List<SelectListItem>();
+                                List<SelectListItem> listItems1 = new List<SelectListItem>();
 
-                                listItems.Add(new SelectListItem
+                                listItems1.Add(new SelectListItem
                                 {
                                     Text = "Male",
                                     Value = "Male"
                                 });
-                                listItems.Add(new SelectListItem
+                                listItems1.Add(new SelectListItem
                                 {
                                     Text = "Female",
                                     Value = "Female",
                                 });
 
                             }
-                            @Html.DropDownListFor(model => model.Gender, listItems, "Gender", new { @class = "form-control", })
+                            @Html.DropDownListFor(model => model.Gender, listItems1, "Select", new { @class = "form-control", })
                         </div>
 
                     </div>
@@ -158,10 +236,10 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="col-md-12">
             <div class="row">
-              
+
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         <div class="col-md-6">
@@ -184,7 +262,9 @@
 <script>
 
     $(document).ready(function () {
-
+        $('#Dob').datepicker({
+            uiLibrary: 'bootstrap'
+        });
         if ($("#userMode").val() == 'Add') {
             $('#exampleModalLabel').html("Add Student")
 

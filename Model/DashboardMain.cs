@@ -13,8 +13,6 @@ namespace TechPlacement.Model
         [Required(AllowEmptyStrings = true)]
         public string EnrollNo { get; set; }
         [Required(AllowEmptyStrings = true)]
-        public string Education { get; set; }
-        [Required(AllowEmptyStrings = true)]
         public string PassYear { get; set; }
         [Required(AllowEmptyStrings = true)]
         public string Department { get; set; }
@@ -25,11 +23,11 @@ namespace TechPlacement.Model
         [Required(AllowEmptyStrings = true)]
         public string Address { get; set; }
         [Required(AllowEmptyStrings = true)]
-        public string PersonName { get; set; }
-        [Required(AllowEmptyStrings = true)]
         public string ContactEmail { get; set; }
         [Required(AllowEmptyStrings = true)]
         public string MobileNo { get; set; }
+        public string OfferLetter { get; set; }
+
 
     }
 }
