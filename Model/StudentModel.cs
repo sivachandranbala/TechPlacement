@@ -16,6 +16,10 @@ namespace TechPlacement.Model
         public DateTime? Dob { get; set; }
         public string Gender { get; set; }
         public string MobileNo { get; set; }
+        public string Department { get; set; }
+        public string PassYear { get; set; }
+        public string CGPA { get; set; }
+        public string Skill { get; set; }
         public string EmailId { get; set; }
         public bool IsActive { get; set; }
     }

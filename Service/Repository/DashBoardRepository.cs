@@ -16,13 +16,13 @@ namespace TechPlacement.Service.Repository
 
 
 
-        public List<DashboardMain> getDasboard(string userId, string loginType)
+        public List<DashboardMain> getDasboard(string userId)
         {
             List<DashboardMain> dashboardDetails = new List<DashboardMain>();
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand("getDashBoardDetails", connection)
+                SqlCommand cmd = new SqlCommand("[dbo].[getStudentDashboardDetails]", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -35,14 +35,7 @@ namespace TechPlacement.Service.Repository
                     Direction = ParameterDirection.Input
                 };
                 cmd.Parameters.Add(useridparam);
-                SqlParameter idTypeparam = new SqlParameter
-                {
-                    ParameterName = "@Type",
-                    SqlDbType = SqlDbType.NVarChar,
-                    Value = loginType,
-                    Direction = ParameterDirection.Input
-                };
-                cmd.Parameters.Add(idTypeparam);
+             
 
                 connection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -52,15 +45,15 @@ namespace TechPlacement.Service.Repository
                     dashboard.StudentId = sdr["SID"].ToString();
                     dashboard.Name = sdr["Name"].ToString();
                     dashboard.EnrollNo = sdr["EnrollNo"].ToString();
-                    dashboard.Education = sdr["Education"].ToString();
                     dashboard.PassYear = sdr["PassYear"].ToString();
                     dashboard.Department = sdr["Department"].ToString();
                     dashboard.CGPA = sdr["CGPA"].ToString();
                     dashboard.Skill = sdr["Skill"].ToString();
                     dashboard.Address = sdr["Address"].ToString();
-                    dashboard.PersonName = sdr["PersonName"].ToString();
                     dashboard.ContactEmail = sdr["ContactEmail"].ToString();
                     dashboard.MobileNo = sdr["MobileNo"].ToString();
+                    dashboard.PassYear = sdr["Passyear"].ToString();
+                    dashboard.OfferLetter = sdr["OfferLetter"].ToString();
                     dashboardDetails.Add(dashboard);
                 }
 
@@ -76,14 +69,14 @@ namespace TechPlacement.Service.Repository
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand("getPlacementDetails", connection)
+                SqlCommand cmd = new SqlCommand("[dbo].[getPlacementDetailsById]", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
 
                 SqlParameter useridparam = new SqlParameter
                 {
-                    ParameterName = "@CID",
+                    ParameterName = "@ClgID",
                     SqlDbType = SqlDbType.Int,
                     Value = Convert.ToInt32(clId),
                     Direction = ParameterDirection.Input
@@ -96,14 +89,11 @@ namespace TechPlacement.Service.Repository
                 while (sdr.Read())
                 {
                     PlacementDetails placement = new PlacementDetails();
-                    placement.LastDate = sdr["LastDate"].ToString();
                     placement.JobCategory = sdr["JobCategory"].ToString();
-                    placement.RequiredSkill = sdr["RequiredSkill"].ToString();
-                    placement.Role = sdr["Role"].ToString();
-                    placement.Min_Qualification = sdr["Min_Qualification"].ToString();
-                    placement.Extra_Skill = sdr["Extra_Skill"].ToString();
-                    placement.MaxAge = sdr["MaxAge"].ToString();
-                    placement.JobLocation = sdr["JobLocation"].ToString();
+                    placement.Min_CGPA = sdr["Min_CGPA"].ToString();
+                    placement.NumberOfPositions = sdr["NumberOfPositions"].ToString();
+                    placement.InterviewDate = sdr["InterviewDate"].ToString();
+                    placement.Status = sdr["Status"].ToString();
                     placementDetails.Add(placement);
 
                 }
@@ -153,6 +143,10 @@ namespace TechPlacement.Service.Repository
                     studentModel.Gender = Convert.ToString(sdr["Gender"]);
                     studentModel.MobileNo = sdr["MobileNo"].ToString();
                     studentModel.EmailId = Convert.ToString(sdr["EmailId"]);
+                    studentModel.Department = Convert.ToString(sdr["Department"]);
+                    studentModel.PassYear = Convert.ToString(sdr["PassYear"]);
+                    studentModel.CGPA = Convert.ToString(sdr["CGPA"]);
+                    studentModel.Skill = Convert.ToString(sdr["Skill"]);
                     studentModel.IsActive = Convert.ToBoolean(sdr["IsActive"]);
 
                     studentDetails.Add(studentModel);
@@ -163,98 +157,176 @@ namespace TechPlacement.Service.Repository
             return studentDetails;
         }
 
-        /// <summary>
-        /// Get Selected Candidate Results
-        /// </summary>
-        /// <param name="companyId"></param>
-        /// <returns></returns>
-
-        public List<CandidateResults> SelectedCandidateResults(int? companyId = 0)
+        public int AddOrUpdateStudent(StudentModel studentModel, string clID)
         {
-            List<CandidateResults> candidateResults = new List<CandidateResults>();
-            try
+            int studentId = 0;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                SqlCommand cmd = new SqlCommand("[dbo].[AddorUpdateStudentDetail]", connection)
                 {
-                    SqlCommand cmd = new SqlCommand("dbo.GetSelectedCandidateResults", connection)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
+                    CommandType = CommandType.StoredProcedure
+                };
 
-                    SqlParameter param = new SqlParameter
-                    {
-                        ParameterName = "@CompanyId", //Parameter name defined in stored procedure
-                        SqlDbType = SqlDbType.Int, //Data Type of Parameter
-                        Value = companyId, //Value passes to the paramtere
-                        Direction = ParameterDirection.Input //Specify the parameter as input
-                    };
-                    //add the parameter to the SqlCommand object
-                    cmd.Parameters.Add(param);
-
-                    connection.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        CandidateResults candidate = new CandidateResults();
-                        candidate.RID = Convert.ToInt32(reader["RID"].ToString());
-                        candidate.SId = (Int32)reader["SId"];
-                        candidate.CId = (Int32)reader["CId"];
-                        candidate.Name = reader["Name"].ToString();
-                        candidate.CName = reader["CName"].ToString();
-                        candidate.RoundName = reader["RoundName"].ToString();
-                        candidate.RoundResult = (Int32)reader["RoundResult"];
-                        candidate.OfferLetter = reader["OfferLetter"].ToString();
-                        candidate.RoundText= reader["RoundText"].ToString();
-                        candidate.Status = reader["Status"].ToString();
-                        candidateResults.Add(candidate);
-                    }
-
-                }
-            }
-            catch(Exception ex)
-            {
-                return null;
-            }
-
-            return candidateResults;
-        }
-
-        /// <summary>
-        /// Add/Update CandidateResults
-        /// </summary>
-        /// <param name="resultId"></param>
-        /// <param name="studId"></param>
-        /// <param name="CompanyId"></param>
-        /// <param name="roundId"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        public int UpdateCandidateResults(string resultId, string studId, string CompanyId, string roundId, string status)
-        {
-            List<CandidateResults> candidateResults = new List<CandidateResults>();
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                SqlParameter sIdparam = new SqlParameter
                 {
-                    SqlCommand cmd = new SqlCommand("dbo.AddUpdateCandidateResults", connection)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
-                    cmd.Parameters.Add("@resultId", SqlDbType.Int).Value = Convert.ToInt32(resultId);
-                    cmd.Parameters.Add("@studId", SqlDbType.Int).Value = Convert.ToInt32(studId);
-                    cmd.Parameters.Add("@CompanyId", SqlDbType.Int).Value = Convert.ToInt32(CompanyId);
-                    cmd.Parameters.Add("@roundId", SqlDbType.Int).Value = Convert.ToInt32(roundId);
-                    cmd.Parameters.Add("@statusId", SqlDbType.Int).Value = Convert.ToInt32(status);
+                    ParameterName = "@StudentId", 
+                    SqlDbType = SqlDbType.Int,
+                    Value = studentModel.SId, 
+                    Direction = ParameterDirection.Input 
+                };
+                cmd.Parameters.Add(sIdparam);
+                SqlParameter fNameparam = new SqlParameter
+                {
+                    ParameterName = "@FName", 
+                    SqlDbType = SqlDbType.NVarChar, 
+                    Value = studentModel.FName,
+                    Direction = ParameterDirection.Input 
+                };
+                cmd.Parameters.Add(fNameparam);
 
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
+                SqlParameter lNameparam = new SqlParameter
+                {
+                    ParameterName = "@LName", 
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.LName, 
+                    Direction = ParameterDirection.Input 
+                };
+                cmd.Parameters.Add(lNameparam);
+                SqlParameter addrparam = new SqlParameter
+                {
+                    ParameterName = "@Address",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Address,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(addrparam);
+                SqlParameter cityparam = new SqlParameter
+                {
+                    ParameterName = "@City",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.City,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(cityparam);
+                SqlParameter stateparam = new SqlParameter
+                {
+                    ParameterName = "@State",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.State,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(stateparam);
+
+                SqlParameter pincodeparam = new SqlParameter
+                {
+                    ParameterName = "@Pincode",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Pincode,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(pincodeparam);
+
+                SqlParameter dobparam = new SqlParameter
+                {
+                    ParameterName = "@Dob",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Dob,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(dobparam);
+               
+                SqlParameter genderparam = new SqlParameter
+                {
+                    ParameterName = "@Gender",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Gender,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(genderparam);
+                SqlParameter mnoparam = new SqlParameter
+                {
+                    ParameterName = "@MobileNo",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.MobileNo,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(mnoparam);
+           
+                SqlParameter isActiveparam = new SqlParameter
+                {
+                    ParameterName = "@IsActive",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = studentModel.IsActive,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(isActiveparam);
+
+
+
+                SqlParameter departparam = new SqlParameter
+                {
+                    ParameterName = "@Department",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Department,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(departparam);
+
+                SqlParameter passyearparam = new SqlParameter
+                {
+                    ParameterName = "@PassYear",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.PassYear,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(passyearparam);
+                SqlParameter cgpaparam = new SqlParameter
+                {
+                    ParameterName = "@CGPA",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.CGPA,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(cgpaparam);
+
+                SqlParameter skillparam = new SqlParameter
+                {
+                    ParameterName = "@Skill",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.Skill,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(skillparam);
+
+
+                SqlParameter enrollparam = new SqlParameter
+                {
+                    ParameterName = "@EnrollNo",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = studentModel.EnrollNo,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(enrollparam);
+
+                SqlParameter clIdparam = new SqlParameter
+                {
+                    ParameterName = "@ClId",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = clID,
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(clIdparam);
+
+                connection.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                if (sdr.Read())
+                {
+
+                    studentId = Convert.ToInt32(sdr["StudentId"]);
                 }
-            }
-            catch (Exception ex)
-            {
-                return 0;
-            }
 
-            return 1;
+            }
+            return studentId;
         }
     }
 }

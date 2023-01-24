@@ -151,6 +151,7 @@
     <Compile Include="Model\CandidateResults.cs" />
     <Compile Include="Model\CollegeMasterModel.cs" />
     <Compile Include="Model\CompanyMasterModel.cs" />
+    <Compile Include="Model\PlacementReceive.cs" />
     <Compile Include="Model\PlacementDetails.cs" />
     <Compile Include="Model\DashboardMain.cs" />
     <Compile Include="Model\Enumerations.cs" />
@@ -259,6 +260,7 @@
     <Content Include="Views\Dashboard\CollegeIndex.cshtml" />
     <Content Include="Views\Dashboard\RequsetPlacement.cshtml" />
     <Content Include="Views\Dashboard\StudentDetailPopup.cshtml" />
+    <Content Include="Views\Dashboard\PlacementReceive.cshtml" />
     <Content Include="Views\Dashboard\ResultPartial.cshtml" />
     <Content Include="Views\Result\Result.cshtml" />
   </ItemGroup>
