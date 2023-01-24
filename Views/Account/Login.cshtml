@@ -67,13 +67,9 @@
                                                         Text = "College",
                                                         Value = "COLLEGE",
                                                     });
-                                                    listItems.Add(new SelectListItem
-                                                    {
-                                                        Text = "Student",
-                                                        Value = "STUDENT"
-                                                    });
+                                                   
                                                 }
-                                                @Html.DropDownListFor(model => model.Type, listItems, "Type", new { @class = "form-control", })
+                                                @Html.DropDownListFor(model => model.Type, listItems, "Login As", new { @class = "form-control", })
 
                                             </div>
                                         </div>

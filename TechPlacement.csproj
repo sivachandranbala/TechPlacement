@@ -143,10 +143,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResultController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\Builders\RazorViewToStringFormat.cs" />
+    <Compile Include="Model\CandidateResults.cs" />
     <Compile Include="Model\CollegeMasterModel.cs" />
     <Compile Include="Model\CompanyMasterModel.cs" />
     <Compile Include="Model\PlacementDetails.cs" />
@@ -257,6 +259,8 @@
     <Content Include="Views\Dashboard\CollegeIndex.cshtml" />
     <Content Include="Views\Dashboard\RequsetPlacement.cshtml" />
     <Content Include="Views\Dashboard\StudentDetailPopup.cshtml" />
+    <Content Include="Views\Dashboard\ResultPartial.cshtml" />
+    <Content Include="Views\Result\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -162,5 +162,99 @@ namespace TechPlacement.Service.Repository
 
             return studentDetails;
         }
+
+        /// <summary>
+        /// Get Selected Candidate Results
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+
+        public List<CandidateResults> SelectedCandidateResults(int? companyId = 0)
+        {
+            List<CandidateResults> candidateResults = new List<CandidateResults>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("dbo.GetSelectedCandidateResults", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    SqlParameter param = new SqlParameter
+                    {
+                        ParameterName = "@CompanyId", //Parameter name defined in stored procedure
+                        SqlDbType = SqlDbType.Int, //Data Type of Parameter
+                        Value = companyId, //Value passes to the paramtere
+                        Direction = ParameterDirection.Input //Specify the parameter as input
+                    };
+                    //add the parameter to the SqlCommand object
+                    cmd.Parameters.Add(param);
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        CandidateResults candidate = new CandidateResults();
+                        candidate.RID = Convert.ToInt32(reader["RID"].ToString());
+                        candidate.SId = (Int32)reader["SId"];
+                        candidate.CId = (Int32)reader["CId"];
+                        candidate.Name = reader["Name"].ToString();
+                        candidate.CName = reader["CName"].ToString();
+                        candidate.RoundName = reader["RoundName"].ToString();
+                        candidate.RoundResult = (Int32)reader["RoundResult"];
+                        candidate.OfferLetter = reader["OfferLetter"].ToString();
+                        candidate.RoundText= reader["RoundText"].ToString();
+                        candidate.Status = reader["Status"].ToString();
+                        candidateResults.Add(candidate);
+                    }
+
+                }
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+
+            return candidateResults;
+        }
+
+        /// <summary>
+        /// Add/Update CandidateResults
+        /// </summary>
+        /// <param name="resultId"></param>
+        /// <param name="studId"></param>
+        /// <param name="CompanyId"></param>
+        /// <param name="roundId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateCandidateResults(string resultId, string studId, string CompanyId, string roundId, string status)
+        {
+            List<CandidateResults> candidateResults = new List<CandidateResults>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("dbo.AddUpdateCandidateResults", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add("@resultId", SqlDbType.Int).Value = Convert.ToInt32(resultId);
+                    cmd.Parameters.Add("@studId", SqlDbType.Int).Value = Convert.ToInt32(studId);
+                    cmd.Parameters.Add("@CompanyId", SqlDbType.Int).Value = Convert.ToInt32(CompanyId);
+                    cmd.Parameters.Add("@roundId", SqlDbType.Int).Value = Convert.ToInt32(roundId);
+                    cmd.Parameters.Add("@statusId", SqlDbType.Int).Value = Convert.ToInt32(status);
+
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+            return 1;
+        }
     }
 }
