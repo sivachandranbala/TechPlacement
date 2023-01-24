@@ -63,46 +63,6 @@ namespace TechPlacement.Service.Repository
 
         }
 
-        public List<PlacementDetails> getPlacementDetails(string clId)
-        {
-            List<PlacementDetails> placementDetails = new List<PlacementDetails>();
-
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                SqlCommand cmd = new SqlCommand("[dbo].[getPlacementDetailsById]", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                SqlParameter useridparam = new SqlParameter
-                {
-                    ParameterName = "@ClgID",
-                    SqlDbType = SqlDbType.Int,
-                    Value = Convert.ToInt32(clId),
-                    Direction = ParameterDirection.Input
-                };
-                cmd.Parameters.Add(useridparam);
-
-
-                connection.Open();
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    PlacementDetails placement = new PlacementDetails();
-                    placement.JobCategory = sdr["JobCategory"].ToString();
-                    placement.Min_CGPA = sdr["Min_CGPA"].ToString();
-                    placement.NumberOfPositions = sdr["NumberOfPositions"].ToString();
-                    placement.InterviewDate = sdr["InterviewDate"].ToString();
-                    placement.Status = sdr["Status"].ToString();
-                    placementDetails.Add(placement);
-
-                }
-
-                return placementDetails;
-
-            }
-
-        }
 
         
         public List<StudentModel> GetAllStudentDetail(int? studentId = 0)
@@ -327,6 +287,267 @@ namespace TechPlacement.Service.Repository
 
             }
             return studentId;
+        }
+
+
+        /// <summary>
+        /// Get Selected Candidate Results
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+
+        public List<CandidateResults> SelectedCandidateResults(int? companyId = 0)
+        {
+            List<CandidateResults> candidateResults = new List<CandidateResults>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("dbo.GetSelectedCandidateResults", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    SqlParameter param = new SqlParameter
+                    {
+                        ParameterName = "@CompanyId", //Parameter name defined in stored procedure
+                        SqlDbType = SqlDbType.Int, //Data Type of Parameter
+                        Value = companyId, //Value passes to the paramtere
+                        Direction = ParameterDirection.Input //Specify the parameter as input
+                    };
+                    //add the parameter to the SqlCommand object
+                    cmd.Parameters.Add(param);
+
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        CandidateResults candidate = new CandidateResults();
+                        candidate.RID = Convert.ToInt32(reader["RID"].ToString());
+                        candidate.SId = (Int32)reader["SId"];
+                        candidate.CId = (Int32)reader["CId"];
+                        candidate.Name = reader["Name"].ToString();
+                        candidate.CName = reader["CName"].ToString();
+                        candidate.RoundName = reader["RoundName"].ToString();
+                        candidate.RoundResult = (Int32)reader["RoundResult"];
+                        candidate.OfferLetter = reader["OfferLetter"].ToString();
+                        candidate.RoundText = reader["RoundText"].ToString();
+                        candidate.Status = reader["Status"].ToString();
+                        candidateResults.Add(candidate);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            return candidateResults;
+        }
+
+
+
+        /// <summary>
+        /// Add/Update CandidateResults
+        /// </summary>
+        /// <param name="resultId"></param>
+        /// <param name="studId"></param>
+        /// <param name="CompanyId"></param>
+        /// <param name="roundId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateCandidateResults(string resultId, string studId, string CompanyId, string roundId, string status)
+        {
+            List<CandidateResults> candidateResults = new List<CandidateResults>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("dbo.AddUpdateCandidateResults", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    cmd.Parameters.Add("@resultId", SqlDbType.Int).Value = Convert.ToInt32(resultId);
+                    cmd.Parameters.Add("@studId", SqlDbType.Int).Value = Convert.ToInt32(studId);
+                    cmd.Parameters.Add("@CompanyId", SqlDbType.Int).Value = Convert.ToInt32(CompanyId);
+                    cmd.Parameters.Add("@roundId", SqlDbType.Int).Value = Convert.ToInt32(roundId);
+                    cmd.Parameters.Add("@statusId", SqlDbType.Int).Value = Convert.ToInt32(status);
+
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+            return 1;
+        }
+
+        public List<PlacementDetails> getPlacementDetails(string cId)
+        {
+            List<PlacementDetails> placementDetails = new List<PlacementDetails>();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("getPlacementDetailsMasterForCollege", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                }; SqlParameter useridparam = new SqlParameter
+                {
+                    ParameterName = "@ClID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Convert.ToInt32(cId),
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(useridparam);
+
+
+                connection.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    PlacementDetails placement = new PlacementDetails();
+                    placement.JobCategory = sdr["JobCategory"].ToString();
+                    placement.Min_CGPA = sdr["Min_CGPA"].ToString();
+                    placement.NumberOfPositions = Convert.ToInt32(sdr["NumberOfPositions"]);
+                    placement.InterviewDate = Convert.ToDateTime(sdr["InterviewDate"]);
+                    placement.Status = sdr["Status"].ToString();
+                    placementDetails.Add(placement);
+                }
+                return placementDetails;
+            }
+        }
+        public List<PlacementDetails> getPlacementDetailsById(string cId, string pId)
+        {
+            List<PlacementDetails> placementDetails = new List<PlacementDetails>(); using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("getPlacementDetailsMaster", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                }; SqlParameter useridparam = new SqlParameter
+                {
+                    ParameterName = "@CID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Convert.ToInt32(cId),
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(useridparam);
+                SqlParameter pidparam = new SqlParameter
+                {
+                    ParameterName = "@PID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Convert.ToInt32(pId),
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(pidparam);
+                connection.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    PlacementDetails placement = new PlacementDetails(); placement.JobCategory = sdr["JobCategory"].ToString();
+                    placement.Min_CGPA = sdr["Min_CGPA"].ToString();
+                    placement.NumberOfPositions = Convert.ToInt32(sdr["NumberOfPositions"]);
+                    placement.InterviewDate = Convert.ToDateTime(sdr["InterviewDate"]);
+                    placement.Status = sdr["Status"].ToString(); placementDetails.Add(placement);
+                }
+                return placementDetails;
+            }
+        }
+
+        public List<InboxModel> GetInboxMessages(string userId, string loginType)
+        {
+            List<InboxModel> inboxDetails = new List<InboxModel>(); using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand(loginType == "COLLEGE" ? "getCLInboxDetails" : "getCInboxDetails", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                }; SqlParameter useridparam = new SqlParameter
+                {
+                    ParameterName = "@Id",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Convert.ToInt32(userId),
+                    Direction = ParameterDirection.Input
+                };
+                cmd.Parameters.Add(useridparam); connection.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    InboxModel inboxObj = new InboxModel();
+                    inboxObj.Id = sdr["ID"].ToString();
+                    inboxObj.Name = sdr["Name"].ToString();
+                    inboxObj.FromName = sdr["FromName"].ToString();
+                    inboxObj.From = sdr["From"].ToString();
+                    inboxObj.To = sdr["To"].ToString();
+                    inboxObj.Message = sdr["Message"].ToString();
+                    inboxObj.EntryDate = sdr["EntryDate"].ToString();
+                    inboxObj.MessageType = sdr["MessageType"].ToString();
+                    inboxDetails.Add(inboxObj);
+                }
+                sdr.Close();
+                SqlCommand cmnd = new SqlCommand(loginType == "COLLEGE" ? "[dbo].[COLLEGE_SELECT]" : "[dbo].[COMPANY_SELECT]", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                sdr = cmnd.ExecuteReader();
+                List<string> cList = new List<string>();
+                while (sdr.Read())
+                {
+                    cList.Add(Convert.ToString(sdr.GetValue(1)));
+                }
+                InboxModel inboxObj1 = new InboxModel();
+                inboxObj1.Clist = cList; inboxDetails.Add(inboxObj1);
+                sdr.Close();
+                connection.Close();
+            }
+            return inboxDetails;
+        }
+        public InboxModel GetCompanyList()
+        {
+            InboxModel companyList = new InboxModel();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmdd = new SqlCommand("[dbo].[COMPANY_SELECT]", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader sdrr = cmdd.ExecuteReader();
+                List<string> cList = new List<string>();
+                while (sdrr.Read())
+                {
+                    cList.Add(Convert.ToString(sdrr.GetValue(1)));
+                }
+                companyList.Id = "-1";
+                companyList.Name = "";
+                companyList.Clist = cList;
+                connection.Close();
+                sdrr.Close();
+            }
+            return companyList;
+        }
+        public InboxModel GetCollegeList()
+        {
+            InboxModel collegeList = new InboxModel();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[College_SELECT]", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                SqlDataReader sdr = cmd.ExecuteReader(); List<string> cList = new List<string>();
+                while (sdr.Read())
+                {
+                    cList.Add(Convert.ToString(sdr.GetValue(1)));
+                }
+                collegeList.Id = "-1";
+                collegeList.Clist = cList;
+                connection.Close();
+                sdr.Close();
+            }
+            return collegeList;
         }
     }
 }

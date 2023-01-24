@@ -19,6 +19,7 @@ namespace TechPlacement.Model
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Type is Required", AllowEmptyStrings = false)]
         public string Type { get; set; }
     
     }

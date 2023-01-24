@@ -23,8 +23,9 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        @Html.LabelFor(u => u.UName, "", new { @style = "color:style='color: #ffffff'" })
+                                    <div class="col-md-12" style="color:white">
+                                        <label>  User Name </label>
+
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group">
@@ -35,8 +36,9 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        @Html.LabelFor(u => u.Password, "", new { @style = "color:style='color: #ffffff'" })
+                                    <div class="col-md-12" style="color:white">
+                                        <label>  Password </label>
+
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group">
@@ -52,6 +54,10 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group">
+                                            <div class="col-md-12" style="color:white">
+                                                <label>  Login As </label>
+
+                                            </div>
                                             <div class="col-md-12">
 
                                                 @{
@@ -67,9 +73,9 @@
                                                         Text = "College",
                                                         Value = "COLLEGE",
                                                     });
-                                                   
+
                                                 }
-                                                @Html.DropDownListFor(model => model.Type, listItems, "Login As", new { @class = "form-control", })
+                                                @Html.DropDownListFor(model => model.Type, listItems, "", new { @class = "form-control", })
 
                                             </div>
                                         </div>

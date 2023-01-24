@@ -23,40 +23,35 @@
                                 <div class="col-md-12" style="overflow: auto; ">
                                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
-
                                             <tr>
-                                                <th>Job Category</th>
-                                                <th>CGPA </th>
-                                                <th>Role</th>
-                                                <th>Number Of Positions</th>
+                                                <th>JobCategory</th>
+                                                <th>Min_CGPA</th>
+                                                <th>NumberOfPositions</th>
                                                 <th>InterviewDate</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+
+
                                             </tr>
 
                                         </thead>
                                         <tbody>
                                             @{
-                                                foreach (var placementInfo in Model)
+                                                foreach (var PlacementDetails in Model)
                                                 {
 
                                                     <tr>
-                                                        <td> placementInfo.JobCategory</td>
-                                                        <td> placementInfo.CGPA</td>
-                                                        <td> placementInfo.Role</td>
-                                                        <td> placementInfo.NumberOfPositions</td>
-                                                        <td> placementInfo.InterviewDate</td>
-                                                        <td> placementInfo.Status</td>
-                                                        <td>
-                                                            <a class="btn btn-primary btnPlacementReceived" > Receive </a>
-                                                        </td>
+                                                        <td> @PlacementDetails.JobCategory</td>
+                                                        <td>@PlacementDetails.Min_CGPA</td>
+                                                        <td> @PlacementDetails.NumberOfPositions</td>
+                                                        <td> @PlacementDetails.InterviewDate</td>
+
+
                                                     </tr>
+
 
                                                 }
 
                                             }
                                         </tbody>
-
                                     </table>
 
                                 </div>

@@ -23,12 +23,17 @@ namespace TechPlacement.Controllers
         }
         public ActionResult Index()
         {
-            IEnumerable<DashboardMain> dashboardTransactionMains = _dashBoardRepository.getDasboard(Session["UserId"].ToString());
-            return View(dashboardTransactionMains);
+            IEnumerable<PlacementDetails> placementDetails = _dashBoardRepository.getPlacementDetails(Session["UserId"].ToString());
+            return View(placementDetails);
+        }
+        public ActionResult AddPlacement(string id)
+        {
+            PlacementDetails placementDetails = _dashBoardRepository.getPlacementDetailsById(Session["UserId"].ToString(), id).FirstOrDefault();
+            //return PartialView("PlacementDetailPopup");
+            return PartialView("PlacementDetailPopup", placementDetails ?? new PlacementDetails());
         }
 
 
-       
         public ActionResult CollegeIndex()
         {
             IEnumerable<DashboardMain> studentDetails = _dashBoardRepository.getDasboard(Session["UserId"].ToString());
@@ -39,6 +44,9 @@ namespace TechPlacement.Controllers
         {
             IEnumerable<PlacementDetails> placementDetails = _dashBoardRepository.getPlacementDetails(Session["UserId"].ToString());
             return View(placementDetails);
+
+            //IEnumerable<PlacementDetails> placementDetails = _dashBoardRepository.getPlacementDetails(Session["UserId"].ToString());
+            //return View(placementDetails);
         }
 
 
@@ -90,6 +98,16 @@ namespace TechPlacement.Controllers
             }
         }
 
+        public ActionResult CInboxx()
+        {
+            IEnumerable<InboxModel> inboxDetails = _dashBoardRepository.GetInboxMessages(Session["UserId"].ToString(), Session["Type"].ToString());
+            return View(inboxDetails);
+        }
+        public PartialViewResult SendNewMessageById(int id)
+        {
+            InboxModel collegeListModel = Session["Type"].ToString() == "COLLEGE" ? _dashBoardRepository.GetCompanyList() : _dashBoardRepository.GetCollegeList();
+            return PartialView("NewMessageById", collegeListModel ?? new InboxModel());
+        }
 
     }
     

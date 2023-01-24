@@ -1,0 +1,83 @@
+﻿@using TechPlacement.Model
+@model InboxModel
+<form id="frmNewMessageMaster">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="diplayMsg" style="color:red"></div>
+        </div>
+        <div class="col-md-12" style="display:none">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="col-md-6">
+                        <label>  Serial No </label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" id="SId" name="SId" class="form-control form-control-sm" value="@Model.Id" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Subject </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="txtSubject" name="txtSubject" class="form-control form-control-sm checkCode" value="@Model.Name" />
+                        </div>
+                    </div>
+                </div>
+               
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Message </label>
+                        </div>
+                        <div class="col-md-6">
+                            <textarea type="text" id="txtMessage" name="txtMessage" class="form-control form-control-sm" value="@Model.Message" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="col-md-6">
+                                <label>  College </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(M => M.Clist, new SelectList(Model.Clist))
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <div id="displayPopupMsg"></div>
+
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        if ($("#userMode").val() == 'Add') {
+            $('#exampleModalLabel').html(" Send Message")
+
+        }
+        else {
+         //   $(".checkCode").attr('readonly', true);
+            $('#exampleModalLabel').html("Reply")
+        };
+    });
+</script>
+

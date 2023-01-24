@@ -1,0 +1,158 @@
+﻿@using TechPlacement.Model
+@model PlacementDetails
+<form id="frmPlacementDetailsMaster">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="diplayMsg" style="color:red"></div>
+        </div>
+        @*<div class="col-md-12" style="display:none">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="col-md-6">
+                        <label>  Serial No </label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" id="SId" name="SId" class="form-control form-control-sm" value="@Model.SId" />
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  JobCategory </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="JobCategory" name="JobCategory" class="form-control form-control-sm checkCode" value="@Model.JobCategory" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Min_CGPA </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Min_CGPA" name="Min_CGPA" class="form-control form-control-sm" value="@Model.Min_CGPA" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  NumberOfPositions </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="NumberOfPositions" name="NumberOfPositions" class="form-control form-control-sm" value="@Model.NumberOfPositions" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  InterviewDate </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="InterviewDate" name="InterviewDate" class="form-control form-control-sm" value="@Model.InterviewDate" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Status</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Status" name="Status" class="form-control form-control-sm" value="@Model.Status" />
+                        </div>
+                    </div>
+                </div>-->
+                @*<div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  State </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="State" name="State" class="form-control form-control-sm" value="@Model.State" />
+                        </div>
+
+                    </div>
+                </div>*@
+            <!--</div>
+        </div>-->
+        @*<div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label>  Pincode </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="Pincode" name="Pincode" class="form-control form-control-sm" value="@Model.Pincode" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Date of Birth</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="Dob" name="Dob" class="form-control form-control-sm" />
+                            <input type="hidden" id="pDob" value=@( Model.Dob.HasValue ?  Model.Dob.Value.ToString("MM/dd/yyyy") : "--/--/----") />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+       
+       
+        @*<div class="col-md-12">
+            <div class="row">
+              
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="col-md-6">
+                            <label> Is Active </label>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.CheckBoxFor(m => m.IsActive, true);
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+    <div id="displayPopupMsg"></div>
+
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        if ($("#userMode").val() == 'Add') {
+            $('#exampleModalLabel').html("Add Placement")
+
+        }
+        else {
+         //   $(".checkCode").attr('readonly', true);
+            $('#exampleModalLabel').html("Edit Placement")
+        };
+    });
+</script>

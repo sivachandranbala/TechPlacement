@@ -149,8 +149,11 @@
     </Compile>
     <Compile Include="Model\Builders\RazorViewToStringFormat.cs" />
     <Compile Include="Model\CandidateResults.cs" />
+    <Compile Include="Model\CollegeListModel.cs" />
     <Compile Include="Model\CollegeMasterModel.cs" />
+    <Compile Include="Model\CompanyListModel.cs" />
     <Compile Include="Model\CompanyMasterModel.cs" />
+    <Compile Include="Model\InboxModel.cs" />
     <Compile Include="Model\PlacementReceive.cs" />
     <Compile Include="Model\PlacementDetails.cs" />
     <Compile Include="Model\DashboardMain.cs" />
@@ -263,6 +266,9 @@
     <Content Include="Views\Dashboard\PlacementReceive.cshtml" />
     <Content Include="Views\Dashboard\ResultPartial.cshtml" />
     <Content Include="Views\Result\Result.cshtml" />
+    <Content Include="Views\Dashboard\PlacementDetailPopup.cshtml" />
+    <Content Include="Views\Dashboard\CInboxx.cshtml" />
+    <Content Include="Views\Dashboard\NewMessageById.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
